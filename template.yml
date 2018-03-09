@@ -5,7 +5,7 @@ Transform:
 Parameters:
   ProjectId:
     Type: String
-    Description: AWS projectID used to associate new resources to team members
+    Description: AWS projectID to be used to associate ressources.
 
   VpcId:
     Type: AWS::EC2::VPC::Id
