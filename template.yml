@@ -25,6 +25,9 @@ Resources:
     Properties:
       Handler: main
       Runtime: go1.x
+      Environment: 
+        Variables:
+          PROJECT_ID: !Ref 'ProjectId'
       VpcConfig:
         SecurityGroupIds: !Ref 'VpcSecurityGroupIds'
         SubnetIds: !Ref 'VpcSubnetIds'
