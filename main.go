@@ -8,8 +8,6 @@ import (
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-sdk-go/service/ssm"
 	l "github.com/axelspringer/go-aws/lambda"
 )
 
@@ -32,9 +30,8 @@ func Handler(request events.APIGatewayProxyRequest) error {
 	}
 
 	lambdaFunc := l.New(projectID)
-	lambdaFunc.SSM = ssm.New(session.New())
 
-	parameters, err := lambdaFunc.GetParameters()
+	parameters, err := lambdaFunc.Store.GetParameters()
 	if err != nil {
 		return err
 	}

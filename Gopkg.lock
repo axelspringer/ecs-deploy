@@ -41,6 +41,7 @@
     "private/protocol/rest",
     "private/protocol/xml/xmlutil",
     "service/ssm",
+    "service/ssm/ssmiface",
     "service/sts"
   ]
   revision = "bafcd9ccc717e9bc5406acaea370577299223873"
@@ -49,8 +50,11 @@
 [[projects]]
   branch = "master"
   name = "github.com/axelspringer/go-aws"
-  packages = ["lambda"]
-  revision = "340c15e889009cf6f82e933dc9bedc845b5296d5"
+  packages = [
+    "lambda",
+    "store"
+  ]
+  revision = "adc8e993465dbf02e0a7f4fa087e26ad449f5d67"
 
 [[projects]]
   name = "github.com/go-ini/ini"
@@ -66,6 +70,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "decf4c13250269734b6f88240432dc9846e99c8d2d051e14a2f7089d4164ca2d"
+  inputs-digest = "5f36cd768437dab40e458c3f52833ef7b272a079a7109fca83a298c6214322c6"
   solver-name = "gps-cdcl"
   solver-version = 1
