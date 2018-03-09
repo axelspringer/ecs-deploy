@@ -10,6 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/ssm"
+	l "github.com/axelspringer/go-aws/lambda"
 )
 
 const (
@@ -30,14 +31,10 @@ func Handler(request events.APIGatewayProxyRequest) error {
 		return errNoProjectID
 	}
 
-	fmt.Println(projectID)
+	lambdaFunc := l.New(projectID)
+	lambdaFunc.SSM = ssm.New(session.New())
 
-	lambdaFunc := &LambdaFunc{
-		ProjectID: projectID,
-		SSM:       ssm.New(session.New()),
-	}
-
-	parameters, err := lambdaFunc.getParameters()
+	parameters, err := lambdaFunc.GetParameters()
 	if err != nil {
 		return err
 	}
