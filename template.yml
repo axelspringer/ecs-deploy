@@ -18,6 +18,13 @@ Parameters:
   VpcSubnetIds:
     Type: List<AWS::EC2::Subnet::Id>
     Description: VPC subnet ids.
+  
+Outputs:
+  LambdaFunction:
+    Description: Information about the value
+    Value: !GetAtt ECSDeploy.Arn
+    Export:
+      Name: !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaFunction']]
 
 Resources:
   ECSDeploy:

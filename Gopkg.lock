@@ -4,7 +4,6 @@
 [[projects]]
   name = "github.com/aws/aws-lambda-go"
   packages = [
-    "events",
     "lambda",
     "lambda/messages",
     "lambdacontext"
@@ -39,7 +38,12 @@
     "private/protocol/query",
     "private/protocol/query/queryutil",
     "private/protocol/rest",
+    "private/protocol/restxml",
     "private/protocol/xml/xmlutil",
+    "service/codepipeline",
+    "service/codepipeline/codepipelineiface",
+    "service/ecs",
+    "service/s3",
     "service/ssm",
     "service/ssm/ssmiface",
     "service/sts"
@@ -54,13 +58,25 @@
     "lambda",
     "store"
   ]
-  revision = "e0222983f0398b8b2b85440deec4a4eb83a5f4f0"
+  revision = "3eb73fcbdec546d308ebaf92e22385e2470f22dc"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/eawsy/aws-lambda-go-event"
+  packages = ["service/lambda/runtime/event/codepipelineevt"]
+  revision = "e888a5ec6428554de39d49d6eda94f60027cfb81"
 
 [[projects]]
   name = "github.com/go-ini/ini"
   packages = ["."]
   revision = "6333e38ac20b8949a8dd68baa3650f4dee8f39f0"
   version = "v1.33.0"
+
+[[projects]]
+  name = "github.com/imdario/mergo"
+  packages = ["."]
+  revision = "163f41321a19dd09362d4c63cc2489db2015f1f4"
+  version = "0.3.2"
 
 [[projects]]
   name = "github.com/jmespath/go-jmespath"
@@ -70,6 +86,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "5f36cd768437dab40e458c3f52833ef7b272a079a7109fca83a298c6214322c6"
+  inputs-digest = "698b8635a5cf9de23f1d9871daac211debce4ba8a2afe7bdf07c1f2b1651da30"
   solver-name = "gps-cdcl"
   solver-version = 1
