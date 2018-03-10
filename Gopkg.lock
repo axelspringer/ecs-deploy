@@ -54,7 +54,7 @@
     "lambda",
     "store"
   ]
-  revision = "adc8e993465dbf02e0a7f4fa087e26ad449f5d67"
+  revision = "e0222983f0398b8b2b85440deec4a4eb83a5f4f0"
 
 [[projects]]
   name = "github.com/go-ini/ini"

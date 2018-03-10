@@ -2,12 +2,10 @@ package main
 
 import (
 	"errors"
-	"fmt"
 	"os"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
-	"github.com/aws/aws-sdk-go/aws"
 	l "github.com/axelspringer/go-aws/lambda"
 )
 
@@ -17,6 +15,8 @@ const (
 
 var (
 	errNoProjectID = errors.New("no ProjectID present")
+
+	parameters = []string{"ecs-cluster"}
 )
 
 // Handler is executed by AWS Lambda in the main function. Once the request
@@ -30,15 +30,17 @@ func Handler(request events.APIGatewayProxyRequest) error {
 	}
 
 	lambdaFunc := l.New(projectID)
+	if _, err := lambdaFunc.Store.TestEnv(parameters); err != nil {
+		return err
+	}
 
-	parameters, err := lambdaFunc.Store.GetParameters()
+	env, err := lambdaFunc.Store.GetEnv()
 	if err != nil {
 		return err
 	}
 
-	for _, parameter := range parameters {
-		fmt.Println(aws.StringValue(parameter.Value))
-	}
+	deploy := new(Deploy)
+	deploy.ECSCluster = env["ecs-cluster"]
 
 	return err
 }
