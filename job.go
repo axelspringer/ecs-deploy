@@ -112,10 +112,7 @@ func (d *Deploy) updateServices() error {
 	}
 
 	for _, svc := range svcs {
-		pos := sort.Search(len(d.Services), func(i int) bool {
-			fmt.Println(d.Services[i].ServiceName, aws.StringValue(svc.ServiceName))
-			return d.Services[i].ServiceName == aws.StringValue(svc.ServiceName)
-		})
+		pos := sort.Search(len(d.Services), func(i int) bool { return d.Services[i].ServiceName == aws.StringValue(svc.ServiceName) })
 		if len(d.Services) == pos {
 			continue
 		}
@@ -127,14 +124,10 @@ func (d *Deploy) updateServices() error {
 		}
 
 		for _, imageDefinition := range imageDefinitions {
-			pos := sort.Search(len(task.ContainerDefinitions), func(i int) bool {
-				fmt.Println(aws.StringValue(task.ContainerDefinitions[i].Name), imageDefinition.Name)
-				return aws.StringValue(task.ContainerDefinitions[i].Name) == imageDefinition.Name
-			})
+			pos := sort.Search(len(task.ContainerDefinitions), func(i int) bool { return aws.StringValue(task.ContainerDefinitions[i].Name) == imageDefinition.Name })
 			if len(task.ContainerDefinitions) == pos {
 				return fmt.Errorf("could not find task %v", imageDefinition.Name)
 			}
-			fmt.Println(imageDefinition.ImageURI)
 			task.ContainerDefinitions[pos].Image = aws.String(imageDefinition.ImageURI)
 		}
 
@@ -143,13 +136,15 @@ func (d *Deploy) updateServices() error {
 			return err
 		}
 
-		for _, test := range task.ContainerDefinitions {
-			fmt.Printf("test %v", aws.StringValue(test.Image))
-		}
-
 		input := &ecs.UpdateServiceInput{
-			Cluster:        svc.ClusterArn,
-			TaskDefinition: newTask.TaskDefinitionArn,
+			Cluster:                       svc.ClusterArn,
+			TaskDefinition:                newTask.TaskDefinitionArn,
+			DeploymentConfiguration:       svc.DeploymentConfiguration,
+			DesiredCount:                  svc.DesiredCount,
+			HealthCheckGracePeriodSeconds: svc.HealthCheckGracePeriodSeconds,
+			NetworkConfiguration:          svc.NetworkConfiguration,
+			Service:                       svc.ServiceName,
+			ForceNewDeployment:            aws.Bool(true),
 		}
 
 		_, err = d.ecs.UpdateServiceWithContext(d.ctx, input)
@@ -158,7 +153,7 @@ func (d *Deploy) updateServices() error {
 		}
 	}
 
-	return fmt.Errorf("hold")
+	return err
 }
 
 func (d *Deploy) getServiceDefinition() (Services, error) {
