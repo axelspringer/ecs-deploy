@@ -144,7 +144,7 @@ func (d *Deploy) updateServices() error {
 			HealthCheckGracePeriodSeconds: svc.HealthCheckGracePeriodSeconds,
 			NetworkConfiguration:          svc.NetworkConfiguration,
 			Service:                       svc.ServiceName,
-			ForceNewDeployment:            aws.Bool(true),
+			// NewDeployment:            aws.Bool(true),
 		}
 
 		_, err = d.ecs.UpdateServiceWithContext(d.ctx, input)
