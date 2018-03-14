@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/aws/aws-lambda-go/lambda"
-	l "github.com/axelspringer/go-aws/lambda"
+	l "github.com/axelspringer/vodka-aws/lambda"
 	event "github.com/eawsy/aws-lambda-go-event/service/lambda/runtime/event/codepipelineevt"
 )
 

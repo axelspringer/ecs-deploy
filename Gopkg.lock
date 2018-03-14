@@ -30,6 +30,7 @@
     "aws/request",
     "aws/session",
     "aws/signer/v4",
+    "internal/sdkio",
     "internal/sdkrand",
     "internal/shareddefaults",
     "private/protocol",
@@ -48,16 +49,19 @@
     "service/ssm/ssmiface",
     "service/sts"
   ]
-  revision = "bafcd9ccc717e9bc5406acaea370577299223873"
-  version = "v1.13.11"
+  revision = "4c9c8e98642a1a5e7c27d7a644cf9140809d49ee"
+  version = "v1.13.13"
 
 [[projects]]
   branch = "master"
   name = "github.com/axelspringer/go-aws"
-  packages = [
-    "lambda",
-    "store"
-  ]
+  packages = ["store"]
+  revision = "3eb73fcbdec546d308ebaf92e22385e2470f22dc"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/axelspringer/vodka-aws"
+  packages = ["lambda"]
   revision = "3eb73fcbdec546d308ebaf92e22385e2470f22dc"
 
 [[projects]]
@@ -73,12 +77,6 @@
   version = "v1.33.0"
 
 [[projects]]
-  name = "github.com/imdario/mergo"
-  packages = ["."]
-  revision = "163f41321a19dd09362d4c63cc2489db2015f1f4"
-  version = "0.3.2"
-
-[[projects]]
   name = "github.com/jmespath/go-jmespath"
   packages = ["."]
   revision = "0b12d6b5"
@@ -86,6 +84,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "698b8635a5cf9de23f1d9871daac211debce4ba8a2afe7bdf07c1f2b1651da30"
+  inputs-digest = "14c7a9df90e1073a969ac3a87878e07adf217a1c9e7293077a960aa101696701"
   solver-name = "gps-cdcl"
   solver-version = 1
