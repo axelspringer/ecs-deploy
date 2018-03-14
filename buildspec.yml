@@ -12,9 +12,6 @@ phases:
       # Install golint
       - go get -u github.com/golang/lint/golint
 
-      # Install dep
-      - go get -u github.com/golang/dep/cmd/dep
-
       # Install Testify to use common assertions and mocks in tests
       - go get -u github.com/stretchr/testify
 
@@ -25,7 +22,7 @@ phases:
       - cd "/go/src/handler"
 
       # Fetch all dependencies
-      - dep ensure
+      - go get ./...
 
       # Ensure code passes all lint tests
       - golint -set_exit_status

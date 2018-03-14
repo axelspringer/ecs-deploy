@@ -14,6 +14,8 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/bradfitz/slice"
+
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
@@ -45,12 +47,12 @@ type Deploy struct {
 // Service contains a service update
 type Service struct {
 	ServiceName      string            `json:"ServiceName"`
-	ImageDefinitions []ImageDefinition `json:"ImageDefinition"`
+	ImageDefinitions []ImageDefinition `json:"ImageDefinitions"`
 }
 
 // ImageDefinition is the specifiction of an image to be updated
 type ImageDefinition struct {
-	Name     string `json:"Name"`
+	Name     string `json:"name"`
 	ImageURI string `json:"imageUri"`
 }
 
@@ -83,6 +85,10 @@ func NewDeploy(ctx context.Context, job *event.Job) (*Deploy, error) {
 		return nil, err
 	}
 
+	slice.Sort(svcs, func(i, j int) bool {
+		return svcs[i].ServiceName < svcs[j].ServiceName
+	})
+
 	deploy.Services = svcs
 
 	return deploy, err
@@ -112,6 +118,7 @@ func (d *Deploy) updateServices() error {
 	}
 
 	for _, svc := range svcs {
+		fmt.Println(aws.StringValue(svc.ServiceName))
 		pos := sort.Search(len(d.Services), func(i int) bool { return d.Services[i].ServiceName == aws.StringValue(svc.ServiceName) })
 		if len(d.Services) == pos {
 			continue
@@ -128,7 +135,8 @@ func (d *Deploy) updateServices() error {
 			if len(task.ContainerDefinitions) == pos {
 				return fmt.Errorf("could not find task %v", imageDefinition.Name)
 			}
-			task.ContainerDefinitions[pos].Image = aws.String(imageDefinition.ImageURI)
+			fmt.Println(imageDefinition.ImageURI)
+			task.ContainerDefinitions[pos].SetImage(imageDefinition.ImageURI)
 		}
 
 		newTask, err := d.registerTaskDefinition(task)
@@ -147,13 +155,15 @@ func (d *Deploy) updateServices() error {
 			// NewDeployment:            aws.Bool(true),
 		}
 
+		fmt.Println(aws.StringValue(input.TaskDefinition))
+
 		_, err = d.ecs.UpdateServiceWithContext(d.ctx, input)
 		if err != nil {
 			return err
 		}
 	}
 
-	return err
+	return fmt.Errorf("hold")
 }
 
 func (d *Deploy) getServiceDefinition() (Services, error) {
@@ -275,7 +285,7 @@ func (d *Deploy) getServices() []*string {
 	var services []*string
 
 	for _, svc := range d.Services {
-		services = append(services, aws.String(svc.ServiceName))
+		services = append(services, &svc.ServiceName)
 	}
 
 	return services
@@ -296,12 +306,18 @@ func (d *Deploy) describeTaskDefinition(taskArn *string) (*ecs.TaskDefinition, e
 func (d *Deploy) describeServices() ([]*ecs.Service, error) {
 	var err error
 
+	svcs := d.getServices()
+
 	input := &ecs.DescribeServicesInput{
 		Cluster:  aws.String(d.ECSCluster),
-		Services: d.getServices(),
+		Services: svcs,
 	}
 
 	res, err := d.ecs.DescribeServicesWithContext(d.ctx, input)
+
+	for _, svc := range res.Services {
+		fmt.Println(aws.StringValue(svc.ServiceName))
+	}
 
 	return res.Services, err
 }

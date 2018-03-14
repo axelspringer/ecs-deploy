@@ -66,6 +66,12 @@
 
 [[projects]]
   branch = "master"
+  name = "github.com/bradfitz/slice"
+  packages = ["."]
+  revision = "d9036e2120b5ddfa53f3ebccd618c4af275f47da"
+
+[[projects]]
+  branch = "master"
   name = "github.com/eawsy/aws-lambda-go-event"
   packages = ["service/lambda/runtime/event/codepipelineevt"]
   revision = "e888a5ec6428554de39d49d6eda94f60027cfb81"
@@ -81,9 +87,15 @@
   packages = ["."]
   revision = "0b12d6b5"
 
+[[projects]]
+  branch = "master"
+  name = "go4.org"
+  packages = ["reflectutil"]
+  revision = "fba789b7e39ba524b9e60c45c37a50fae63a2a09"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "14c7a9df90e1073a969ac3a87878e07adf217a1c9e7293077a960aa101696701"
+  inputs-digest = "0ebb7b1f8850c0462a627271f3eb861f253bbd85401041923b51a832f1c33538"
   solver-name = "gps-cdcl"
   solver-version = 1
