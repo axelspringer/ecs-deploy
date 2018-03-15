@@ -118,7 +118,6 @@ func (d *Deploy) updateServices() error {
 	}
 
 	for _, svc := range svcs {
-		fmt.Println(aws.StringValue(svc.ServiceName))
 		pos := sort.Search(len(d.Services), func(i int) bool { return d.Services[i].ServiceName == aws.StringValue(svc.ServiceName) })
 		if len(d.Services) == pos {
 			continue
@@ -135,7 +134,6 @@ func (d *Deploy) updateServices() error {
 			if len(task.ContainerDefinitions) == pos {
 				return fmt.Errorf("could not find task %v", imageDefinition.Name)
 			}
-			fmt.Println(imageDefinition.ImageURI)
 			task.ContainerDefinitions[pos].SetImage(imageDefinition.ImageURI)
 		}
 
@@ -155,15 +153,13 @@ func (d *Deploy) updateServices() error {
 			// NewDeployment:            aws.Bool(true),
 		}
 
-		fmt.Println(aws.StringValue(input.TaskDefinition))
-
 		_, err = d.ecs.UpdateServiceWithContext(d.ctx, input)
 		if err != nil {
 			return err
 		}
 	}
 
-	return fmt.Errorf("hold")
+	return err
 }
 
 func (d *Deploy) getServiceDefinition() (Services, error) {
@@ -314,10 +310,6 @@ func (d *Deploy) describeServices() ([]*ecs.Service, error) {
 	}
 
 	res, err := d.ecs.DescribeServicesWithContext(d.ctx, input)
-
-	for _, svc := range res.Services {
-		fmt.Println(aws.StringValue(svc.ServiceName))
-	}
 
 	return res.Services, err
 }
