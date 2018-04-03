@@ -118,7 +118,7 @@ func (d *Deploy) updateServices() error {
 	}
 
 	for _, svc := range svcs {
-		pos := sort.Search(len(d.Services), func(i int) bool { return d.Services[i].ServiceName == aws.StringValue(svc.ServiceName) })
+		pos := sort.Search(len(d.Services), func(i int) bool { return aws.StringValue(svc.ServiceName) <= d.Services[i].ServiceName })
 		if len(d.Services) == pos {
 			continue
 		}
@@ -130,7 +130,7 @@ func (d *Deploy) updateServices() error {
 		}
 
 		for _, imageDefinition := range imageDefinitions {
-			pos := sort.Search(len(task.ContainerDefinitions), func(i int) bool { return aws.StringValue(task.ContainerDefinitions[i].Name) == imageDefinition.Name })
+			pos := sort.Search(len(task.ContainerDefinitions), func(i int) bool { return imageDefinition.Name <= aws.StringValue(task.ContainerDefinitions[i].Name) })
 			if len(task.ContainerDefinitions) == pos {
 				return fmt.Errorf("could not find task %v", imageDefinition.Name)
 			}
