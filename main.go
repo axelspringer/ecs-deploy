@@ -13,7 +13,7 @@ import (
 
 const (
 	defaultEnvProjectID = "PROJECT_ID"
-	defaultTimeout      = 3000
+	defaultTimeout      = 60
 )
 
 var (
@@ -27,7 +27,7 @@ var (
 func Handler(ctx context.Context, event event.Event) error {
 	var err error
 
-	withTimeout, cancel := context.WithTimeout(ctx, 5000*time.Millisecond)
+	withTimeout, cancel := context.WithTimeout(ctx, defaultTimeout*time.Second)
 	defer cancel()
 
 	deploy, err := NewDeploy(withTimeout, event.Job)
@@ -59,7 +59,7 @@ func Handler(ctx context.Context, event event.Event) error {
 		return deploy.putJobFailure(NewFailure(err))
 	}
 
-	err = deploy.putbJobSuccess(nil)
+	err = deploy.putJobSuccess(nil)
 
 	return err // noop
 }

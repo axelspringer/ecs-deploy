@@ -194,7 +194,7 @@ func (d *Deploy) getServiceDefinition() (Services, error) {
 	return svcs, err
 }
 
-func (d *Deploy) putbJobSuccess(execDetails *codepipeline.ExecutionDetails) error {
+func (d *Deploy) putJobSuccess(execDetails *codepipeline.ExecutionDetails) error {
 	var err error
 
 	input := &codepipeline.PutJobSuccessResultInput{
