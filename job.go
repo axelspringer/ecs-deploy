@@ -15,6 +15,7 @@ import (
 	"strings"
 
 	"github.com/bradfitz/slice"
+	log "github.com/sirupsen/logrus"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
@@ -105,7 +106,7 @@ func NewFailure(err error) *codepipeline.FailureDetails {
 // NewExecDetails return new pipeline execution details
 func NewExecDetails() *codepipeline.ExecutionDetails {
 	return &codepipeline.ExecutionDetails{
-		// should do more
+	// should do more
 	}
 }
 
@@ -190,6 +191,9 @@ func (d *Deploy) getServiceDefinition() (Services, error) {
 	}
 
 	err = json.Unmarshal(data, &svcs)
+	log.WithFields(log.Fields{
+		"ServiceDefinitionJSON from artifact": string(data),
+	}).Info("ServiceDefinitionJSON output")
 
 	return svcs, err
 }

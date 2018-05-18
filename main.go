@@ -9,6 +9,7 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 	l "github.com/axelspringer/vodka-aws/lambda"
 	event "github.com/eawsy/aws-lambda-go-event/service/lambda/runtime/event/codepipelineevt"
+	log "github.com/sirupsen/logrus"
 )
 
 const (
@@ -65,5 +66,7 @@ func Handler(ctx context.Context, event event.Event) error {
 }
 
 func main() {
+	log.SetFormatter(&log.JSONFormatter{})
+
 	lambda.Start(Handler)
 }
